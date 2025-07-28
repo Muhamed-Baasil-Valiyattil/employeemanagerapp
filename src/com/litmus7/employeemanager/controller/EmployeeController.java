@@ -1,5 +1,7 @@
 package com.litmus7.employeemanager.controller;
 
+import java.io.BufferedReader;
+import java.io.InputStreamReader;
 import java.util.ArrayList;
 
 import com.litmus7.employeemanager.dto.Employee;
@@ -17,7 +19,8 @@ public class EmployeeController {
 
 
     public ArrayList<Employee> loadEmployeeDataFromTextFile(String filepath){
-        ArrayList<Employee> employees = TextFileUtil.dataFromTextFile(filepath);
+
+        ArrayList<Employee> employees = TextFileUtil.dataFromTextFile(filepath); //fetches data from text file
         
         // Validate all records
         // for (Employee emp : employees) {
@@ -28,7 +31,7 @@ public class EmployeeController {
     }
 
     public ArrayList<Employee> loadEmployeeDataFromCsvFile(){
-
+        
         ArrayList<Employee> employees = TextFileUtil.dataFromCsvFile();
         return employees;
     }
@@ -37,7 +40,9 @@ public class EmployeeController {
 
         TextFileUtil.parseToCsv(employees);
 
+
     }
+    
     public void printDataToTable(ArrayList<Employee> employees){
         
         System.out.println("-".repeat(TABLE_WIDTH));
@@ -59,4 +64,70 @@ public class EmployeeController {
         
     
     }
+
+    public ArrayList<Employee> readDataFromUser(){
+
+        ArrayList<Employee> employees = new ArrayList<>();
+
+        try {
+
+        BufferedReader inputReader = new BufferedReader(new InputStreamReader(System.in)); 
+
+        String id;
+        String firstName;
+        String lastName;
+        String mobileNumber;
+        String email;
+        String joiningDate;
+        String activeStatus;
+        String exitOption;
+
+
+        do {
+            
+            System.out.print("Enter Employee ID : ");
+            id = inputReader.readLine();
+             
+            System.out.print("Enter Employee First Name : ");
+            firstName = inputReader.readLine();
+
+            System.out.print("Enter Employee Last Name : ");
+            lastName = inputReader.readLine();
+
+            System.out.print("Enter Employee Mobile Number : ");
+            mobileNumber = inputReader.readLine();
+
+            System.out.print("Enter Employee email : ");
+            email = inputReader.readLine();
+
+            System.out.print("Enter Employee Joining Date (YYYY-MM-DD): ");
+            joiningDate = inputReader.readLine();
+
+            System.out.print("Enter Employeed Active Status (true/false) : ");
+            activeStatus = inputReader.readLine();
+
+            Employee employee = new Employee(id,firstName,lastName,mobileNumber,email,joiningDate,Boolean.parseBoolean(activeStatus));
+
+            //validate employee here
+            employees.add(employee);
+            
+            System.out.print("Do you wish to enter another entry (y/n) : ");
+            exitOption = inputReader.readLine();
+
+        } while (exitOption.compareTo("y")==0);
+            
+        } catch (Exception e) {
+            
+            System.out.print("Error" + e.getMessage());
+        }
+
+        return employees;
+    }
+
+    public void insertIntoCsvFile(ArrayList<Employee> employees){
+
+        TextFileUtil.appendToCsv(employees);
+
+    }
+
 }

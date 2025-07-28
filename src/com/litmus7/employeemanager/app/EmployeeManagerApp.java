@@ -14,14 +14,14 @@ public class EmployeeManagerApp {
         Scanner input = new Scanner(System.in);
         ArrayList<Employee> employees = new ArrayList<>();
 
-        boolean exit = false;
-        int command;
-        char save;
-        String path;
+        boolean exit = false; //for exiting the application
+        int command;  //options to opt in menu
+        char save;    
+        String path;  //path of user specified .txt file
 
-        while (exit) {
+        while (!exit) {
             
-            
+            //menu
             System.out.println("*".repeat(25)+"Available Services"+"*".repeat(25));	
             System.out.println("1. Load Text Files");
             System.out.println("2. Insert Employee details into database");
@@ -39,25 +39,50 @@ public class EmployeeManagerApp {
                     path = input.nextLine();
                     employees = controller.loadEmployeeDataFromTextFile(path);
                     controller.printDataToTable(employees);
-
+ 
+                    // Save Loaded File into Csv
                     System.out.print("\nDo You Want To Save the Data into a csv file (enter y if yes): ");
                     save = input.next().charAt(0);
-
                     if(save == 'y'){
                         controller.writeEmployeeDataToCsvFile(employees);
                     }
                     
                     break;
 
+                case 2:
+
+                   
+                    System.out.println("Entry to database");
+                    employees = controller.readDataFromUser();  //Reads Employee entry from User
+                    controller.printDataToTable(employees);     //Read entries are displayed to the user
+
+                    //If user accepts the entries are saved to csv file
+                    System.out.println("\n Do you want to insert these entries into databse (enter y if yes): ");
+                    save = input.next().charAt(0);
+                    if(save == 'y'){
+                    System.out.println("Inserting  into database");
+                    controller.insertIntoCsvFile(employees);
+                    } 
+
                 case 3:
 
+                    //Option to see values in csv file in formatted way
                     System.out.println("Employee Database View");
                     employees = controller.loadEmployeeDataFromCsvFile();
                     controller.printDataToTable(employees);
                     break;
+                
+
             
-                default:
-                    break;
+                case 4:
+
+                  //To exit the Application
+		    	  System.out.println("Exiting the App");
+		    	  exit = true;
+		    	  break;
+
+		        default:
+		    	  System.out.println("Invalid Command");
             }
 
             

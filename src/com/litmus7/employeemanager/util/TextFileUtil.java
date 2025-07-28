@@ -2,6 +2,7 @@ package com.litmus7.employeemanager.util;
 
 import java.io.BufferedReader;
 import java.io.FileReader;
+import java.io.FileWriter;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.util.ArrayList;
@@ -10,8 +11,8 @@ import com.litmus7.employeemanager.dto.Employee;
 
 public class TextFileUtil {
 
-    private static final String TARGET_CSV = "employeemanagerapp/employees.csv";
-    private static final String TEXT_FILE_PATH = "employeemanagerapp/employees.txt";
+    private static final String TARGET_CSV = "employees.csv";
+    private static final String TEXT_FILE_PATH = "employees.txt";
     private static final String DOLLAR_DELIMITER = "\\$";
     private static final String COMMA_DELIMITER = ",";
 
@@ -53,7 +54,7 @@ public class TextFileUtil {
 	   
     }
 
-    public static ArrayList<Employee> dataFromCsvFile(){
+    public static ArrayList<Employee> dataFromCsvFile(){ //same as dataFromTextFile method but there is no user specified path
 
 	    ArrayList<Employee> employees = new ArrayList<>();
 	    String line;
@@ -93,10 +94,11 @@ public class TextFileUtil {
     public static void parseToCsv(ArrayList<Employee> employees){
 
 
-        try (PrintWriter writer = new PrintWriter(TARGET_CSV)){
+        try (PrintWriter writer = new PrintWriter(TARGET_CSV)){ //file overwrites data
 
             for (Employee employee : employees) {
-
+                
+                //written in ID,FirstName,LastName,MobileNumber,Email,JoiningDate,ActiveStatus Format
                 writer.printf("%s,%s,%s,%s,%s,%s,%s\n",employee.getId(),employee.getFirstName(),employee.getLastName(),
                   employee.getMobileNumber(),employee.getEmail(),employee.getJoiningDate(),Boolean.toString(employee.isActiveStatus()));
                 
@@ -106,6 +108,27 @@ public class TextFileUtil {
 
             System.out.println("Error"+e.getMessage());
         }
+
+    }
+
+    public static void appendToCsv(ArrayList<Employee> employees){
+
+
+        try (PrintWriter writer = new PrintWriter(new FileWriter(TARGET_CSV,true))){ //file appends data
+
+            for (Employee employee : employees) {
+                
+                //written in ID,FirstName,LastName,MobileNumber,Email,JoiningDate,ActiveStatus Format
+                writer.printf("%s,%s,%s,%s,%s,%s,%s\n",employee.getId(),employee.getFirstName(),employee.getLastName(),
+                  employee.getMobileNumber(),employee.getEmail(),employee.getJoiningDate(),Boolean.toString(employee.isActiveStatus()));
+                
+            }
+            
+        } catch (Exception e) {
+
+            System.out.println("Error"+e.getMessage());
+        }
+
 
     }
 
