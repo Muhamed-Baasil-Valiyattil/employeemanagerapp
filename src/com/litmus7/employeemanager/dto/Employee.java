@@ -1,5 +1,7 @@
 package com.litmus7.employeemanager.dto;
 
+import java.time.LocalDate;
+
 public class Employee {
 
     private String id;
@@ -7,12 +9,12 @@ public class Employee {
     private String lastName;
     private String mobileNumber;
     private String email;
-    private String joiningDate;
+    private LocalDate joiningDate;
     private boolean activeStatus;
 
     
 
-    public Employee(String id, String firstName, String lastName, String mobileNumber, String email, String joiningDate,
+    public Employee(String id, String firstName, String lastName, String mobileNumber, String email, LocalDate joiningDate,
             boolean activeStatus) {
         this.id = id;
         this.firstName = firstName;
@@ -40,7 +42,7 @@ public class Employee {
     public String getEmail() {
         return email;
     }
-    public String getJoiningDate() {
+    public LocalDate getJoiningDate() {
         return joiningDate;
     }
     public boolean isActiveStatus() {
@@ -61,7 +63,7 @@ public class Employee {
     public void setEmail(String email) {
         this.email = email;
     }
-    public void setJoiningDate(String joiningDate) {
+    public void setJoiningDate(LocalDate joiningDate) {
         this.joiningDate = joiningDate;
     }
     public void setActiveStatus(boolean activeStatus) {

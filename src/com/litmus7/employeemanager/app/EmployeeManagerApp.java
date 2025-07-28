@@ -35,8 +35,9 @@ public class EmployeeManagerApp {
                 case 1:
                     
                     // Loads '$' file into formatted output in Console.
-                    System.out.print("/nEnter the path of file to load the data : ");
+                    System.out.print("\nEnter the path of file to load the data : ");
                     path = input.nextLine();
+                    System.out.println();
                     employees = controller.loadEmployeeDataFromTextFile(path);
                     controller.printDataToTable(employees);
  
@@ -57,12 +58,14 @@ public class EmployeeManagerApp {
                     controller.printDataToTable(employees);     //Read entries are displayed to the user
 
                     //If user accepts the entries are saved to csv file
-                    System.out.println("\n Do you want to insert these entries into databse (enter y if yes): ");
+                    System.out.print("\nDo you want to insert these entries into databse (enter y if yes): ");
+                    System.out.println();
                     save = input.next().charAt(0);
                     if(save == 'y'){
-                    System.out.println("Inserting  into database");
-                    controller.insertIntoCsvFile(employees);
+                        System.out.println("Inserting  into database");
+                        controller.insertIntoCsvFile(employees);
                     } 
+                    break;
 
                 case 3:
 
@@ -76,13 +79,14 @@ public class EmployeeManagerApp {
             
                 case 4:
 
-                  //To exit the Application
-		    	  System.out.println("Exiting the App");
-		    	  exit = true;
-		    	  break;
+                    //To exit the Application
+                    System.out.println("Exiting the App");
+                    exit = true;
+                    break;
 
 		        default:
-		    	  System.out.println("Invalid Command");
+                
+                    System.out.println("Invalid Command");
             }
 
             
