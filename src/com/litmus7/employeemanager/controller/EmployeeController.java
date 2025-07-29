@@ -35,8 +35,9 @@ public class EmployeeController {
     /**
     * loads employee data from text file with '$' delimiter
     *
-    * @param filepath
-    * @return employees
+    * @param filepath user specified file path to .txt file
+    * @throws IOException as it uses TextUtil method .dataFromTextFile(filepath)
+    * @return employees , list of employee objects
     */
 
     public ArrayList<Employee> loadEmployeeDataFromTextFile(String filepath){
@@ -109,7 +110,8 @@ public class EmployeeController {
     /**
     * loads employee data from Csv file , Csv file has ',' delimiter
     * file path is predefined
-    * @return employees 
+    * @throws IOExcetion as it uses TextUtil method .dataFromCsvFile()
+    * @return employees , list of employee objects
     */
 
     public ArrayList<Employee> loadEmployeeDataFromCsvFile(){
@@ -152,7 +154,7 @@ public class EmployeeController {
     * "%s,%s,%s,%s,%s,%s,%s" format is used
     * Non String types like date and boolean values are parsed into String values
     *
-    * @param employees
+    * @param employees list of employee objects to write to csv file
     */
 
     public void writeEmployeeDataToCsvFile(ArrayList<Employee> employees){
@@ -190,7 +192,7 @@ public class EmployeeController {
     /**
     * to print List of Employee objects in human readable way
     *
-    * @param employees
+    * @param employees list of employee objects, This is a bulk operation
     */
 
     public void printDataToTable(ArrayList<Employee> employees){
@@ -251,8 +253,8 @@ public class EmployeeController {
     * to print Single Employee object in human readable way 
     * This is a overload method 
     * 
-    * @param employee
-    * @param message
+    * @param employee employee object to output
+    * @param message messages or errors to display if needed
     */
 
     public void printDataToTable(Employee employee , String message){
@@ -278,7 +280,7 @@ public class EmployeeController {
 
     /**
     * read employee object data from user and validates it
-    *
+    * @throws IOException since it used BufferedReader
     * @return employee
     */
 
@@ -366,7 +368,7 @@ public class EmployeeController {
     * employee objects are appended to csv file
     * "%s,%s,%s,%s,%s,%s,%s\n" format is used for csv
     *
-    * @param employee
+    * @param employees list of employee objects to append to csv file 
     */
 
     public void insertIntoCsvFile(ArrayList<Employee> employees){

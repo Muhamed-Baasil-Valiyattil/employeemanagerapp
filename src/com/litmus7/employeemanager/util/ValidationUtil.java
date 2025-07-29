@@ -30,8 +30,10 @@ public class ValidationUtil {
     /**
     * Validates Employee object fields
     *
-    * @param employee
-    * @return message
+    * @param employee employee object is the input for validation
+    * @return message initially message = "valid" if it stays the same the employee object is valid else appropriate message is returned
+    * @throws NumberFormatException if id of String type cannot be parsed into integer (e.g ID = "12s" throws this exception )
+    * @throws DateTimeParseException if joiningDate of String type cannot be parsed into LocalDate type (e.g joiningDate "2023-92-12" throws this exception)
     */
 
     public static String validateEmployeeObject(Employee employee){
@@ -208,14 +210,15 @@ public class ValidationUtil {
     /**
      * Delete from Cache if user doesn't save the record
      * 
-     * @param employees
+     * @param employees employee's ID , Email , Mobile Number are deleted assuming these are unique attributes
      */
 
     public static void deleteFromCache(List<Employee> employees){
 
         for (Employee employee : employees) {
             
-            //valid object ID,Email,MobileNumber is added their cache so it can be checked for duplicates
+            //valid object ID,Email,MobileNumber is deleted from their cache 
+            //This is done in case user does save the valid employee objects, the entries will need to be removed from cache also
             idCache.remove(Integer.parseInt(employee.getId()));
             emailCache.remove(employee.getEmail());
             mobileNumberCache.remove(employee.getMobileNumber());

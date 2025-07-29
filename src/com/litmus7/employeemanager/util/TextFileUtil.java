@@ -22,8 +22,9 @@ public class TextFileUtil {
     * read raw data from text file
     * file is read from specific path if user has specified the path , else a pre-defined path is used
     *
-    * @param filepath
-    * @return lines
+    * @param filepath filepath to .txt file , if it's empty path TEXT_FILE_PATH is used as default path.
+    * @throws IOException In case error occurs during opening or reading of file
+    * @return lines , list of Strings read from file, each String is a line in file
     */
 
     public static List<String> dataFromTextFile(String filepath) throws IOException{
@@ -45,9 +46,9 @@ public class TextFileUtil {
 
     /**
     * read raw data from csv file
-    * here path is pre-defined
-    *
-    * @return lines
+    * here path is pre-defined that is TARGET_CSV
+    * @throws IOException In case error occurs during opening or reading of file
+    * @return lines , list of Strings read from file, each String is a line in file
     */
 
     public static List<String> dataFromCsvFile() throws IOException{ 
@@ -72,8 +73,8 @@ public class TextFileUtil {
     /**
     * write list of lines of String type into a default file (csv file)
     * file is overwritten
-    *
-    * @param lines
+    * @param lines list of String (lines) to write to file
+    * @throws IOException In case error occurs during opening or writing to file
     */
 
     public static void parseToCsv(List<String> lines) throws IOException{
@@ -93,7 +94,8 @@ public class TextFileUtil {
     * write list of lines of String type into a default file (csv file)
     * file is appended
     *
-    * @param lines
+    * @param lines list of String (lines) to write to file
+    * @throws IOException In case error occurs during opening or writing to file
     */
 
     public static void appendToCsv(List<String> lines) throws IOException{
