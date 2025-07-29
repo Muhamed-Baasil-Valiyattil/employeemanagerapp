@@ -37,8 +37,6 @@ public class ValidationUtil {
     public static String validateEmployeeObject(Employee employee){
 
         String message = VALID;
-
-        int id;
  
         /**
          * ID validations :
@@ -47,6 +45,8 @@ public class ValidationUtil {
          * If ID is less than the limit defined
          * If ID is not duplicate
          */
+
+        int id;
         try {
            
             id = Integer.parseInt(employee.getId());  
@@ -171,11 +171,24 @@ public class ValidationUtil {
 
         /**
          * Joining Date validations :
+         * If Joining Date is a valid date
          * If Joining Date is not a future date
          * If Joining Date is after company establishment
          */
+
+        LocalDate date;
+        try {
+
+            date = LocalDate.parse(employee.getJoiningDate());
+            
+         } catch (Exception e) {
+            
+            message = e.getMessage();
+            return message;
+
+         }
 		
-		LocalDate date = employee.getJoiningDate();
+		
 		
 		if(date.isAfter(todayDate) || date.isBefore(companyCreationDate))
 		{

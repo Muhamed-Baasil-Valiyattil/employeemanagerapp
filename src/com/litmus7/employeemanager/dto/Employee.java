@@ -9,12 +9,12 @@ public class Employee {
     private String lastName;
     private String mobileNumber;
     private String email;
-    private LocalDate joiningDate;
+    private String joiningDate;
     private boolean activeStatus;
 
     
 
-    public Employee(String id, String firstName, String lastName, String mobileNumber, String email, LocalDate joiningDate,
+    public Employee(String id, String firstName, String lastName, String mobileNumber, String email, String joiningDate,
             boolean activeStatus) {
         this.id = id;
         this.firstName = firstName;
@@ -42,7 +42,7 @@ public class Employee {
     public String getEmail() {
         return email;
     }
-    public LocalDate getJoiningDate() {
+    public String getJoiningDate() {
         return joiningDate;
     }
     public boolean isActiveStatus() {
@@ -63,7 +63,7 @@ public class Employee {
     public void setEmail(String email) {
         this.email = email;
     }
-    public void setJoiningDate(LocalDate joiningDate) {
+    public void setJoiningDate(String joiningDate) {
         this.joiningDate = joiningDate;
     }
     public void setActiveStatus(boolean activeStatus) {

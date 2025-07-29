@@ -3,7 +3,6 @@ package com.litmus7.employeemanager.controller;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
-import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -24,9 +23,12 @@ public class EmployeeController {
     private static final int DATE_WIDTH = 13;
     private static final int ACTIVER_STATUS_WIDTH = 13;
     private static final int TABLE_WIDTH = 117;
+    private static final int EMPTY_TABLE_WIDTH = 100;
+    private static final int LEFT_PADDING = 25;
     private static final String DOLLAR_DELIMITER = "\\$";
     private static final String COMMA_DELIMITER = ",";
     private static final String VALID = "valid";
+
 
 
      
@@ -59,16 +61,22 @@ public class EmployeeController {
 
 
                 String[] attributes = line.split(DOLLAR_DELIMITER);
+                
+                for (int i = 0; i < attributes.length; i++) {
+
+                    attributes[i] = attributes[i].trim();
+                    
+                }
 
                 try{
                     Employee employee = new Employee(
                             attributes[0], // ID
-                            attributes[1], // First Name
-                            attributes[2], // Last Name
+                            (attributes[1].substring(0,1).toUpperCase()+attributes[1].substring(1).toLowerCase()), // First Name Capitalized
+                            (attributes[2].substring(0,1).toUpperCase()+attributes[2].substring(1).toLowerCase()), // Last Name Capitalized
                             attributes[3], // Mobile
                             attributes[4], // Email
-                            LocalDate.parse(attributes[5]), // Joining Date
-                            Boolean.parseBoolean(attributes[6]) // Active Status
+                            attributes[5], // Joining Date
+                            Boolean.parseBoolean(attributes[6].toLowerCase()) // Active Status
                     );
 
                     // validation occurs here
@@ -81,8 +89,8 @@ public class EmployeeController {
                     }else {
 
                         // if data is not valid the message is printed
-                        printDataToTable(employee);
-                        System.out.println(validation);
+                        printDataToTable(employee,"Invalid Entry ---->");
+                        System.out.println("\nError Message : " +validation+"\n");
 
                     }
                 }catch (Exception e) {
@@ -123,7 +131,7 @@ public class EmployeeController {
                         attributes[2], // Last Name
                         attributes[3], // Mobile
                         attributes[4], // Email
-                        LocalDate.parse(attributes[5]), // Joining Date
+                        attributes[5], // Joining Date
                         Boolean.parseBoolean(attributes[6]) // Active Status
                 );
 
@@ -156,7 +164,7 @@ public class EmployeeController {
         for (Employee employee: employees) {
           
             line = String.format("%s,%s,%s,%s,%s,%s,%s\n",employee.getId(),employee.getFirstName(),employee.getLastName(),
-                employee.getMobileNumber(),employee.getEmail(),employee.getJoiningDate().toString(),Boolean.toString(employee.isActiveStatus()));
+                employee.getMobileNumber(),employee.getEmail(),employee.getJoiningDate(),Boolean.toString(employee.isActiveStatus()));
             
             lines.add(line);
             
@@ -192,48 +200,71 @@ public class EmployeeController {
            ------------------------------------------------------------------------------------
         */
         
-        System.out.println("-".repeat(TABLE_WIDTH));
+        if (!employees.isEmpty()) {
+
+            System.out.println(" ".repeat(LEFT_PADDING) + "-".repeat(TABLE_WIDTH));
+            System.out.print(" ".repeat(LEFT_PADDING) + "| " + "ID" + " ".repeat((ID_WIDTH - "ID".length())));
+            System.out.print("| " + "First Name" + " ".repeat((NAME_WIDTH - "First Name".length())));
+            System.out.print("| " + "Last Name" + " ".repeat((NAME_WIDTH - "Last Name".length())));
+            System.out.print("| " + "Mobile Number" + " ".repeat((MOBILE_NUMBER_WIDTH - "Mobile Number".length())));
+            System.out.print("| " + "Email" + " ".repeat((EMAIL_WIDTH - "Email".length())));
+            System.out.print("| " + "Joining Date" + " ".repeat((DATE_WIDTH - "Joining Date".length())));
+            System.out.print("| " + "Active Status" + " ".repeat((ACTIVER_STATUS_WIDTH - "Active Status".length())));
+            System.out.println(" |");
+            System.out.println(" ".repeat(LEFT_PADDING) + "-".repeat(TABLE_WIDTH));
+            
+        }else{
+            
+            System.out.println(" ".repeat(LEFT_PADDING) + "-".repeat(EMPTY_TABLE_WIDTH));
+            System.out.print(" ".repeat(LEFT_PADDING) +"|"+" ".repeat((EMPTY_TABLE_WIDTH/2)-2)+"Empty"+" ".repeat((EMPTY_TABLE_WIDTH/2)-5)+"|\n");
+            System.out.println(" ".repeat(LEFT_PADDING) + "-".repeat(EMPTY_TABLE_WIDTH));
+        }
+        
         
         for (Employee employee : employees) {
 
-        System.out.print("| "+employee.getId()+" ".repeat((ID_WIDTH-employee.getId().length())));
+        System.out.print(" ".repeat(LEFT_PADDING)+"| "+employee.getId()+" ".repeat((ID_WIDTH-employee.getId().length())));
         System.out.print("| "+employee.getFirstName()+" ".repeat((NAME_WIDTH-employee.getFirstName().length())));
         System.out.print("| "+employee.getLastName()+" ".repeat((NAME_WIDTH-employee.getLastName().length())));
         System.out.print("| "+employee.getMobileNumber()+" ".repeat((MOBILE_NUMBER_WIDTH-employee.getMobileNumber().length())));
         System.out.print("| "+employee.getEmail()+" ".repeat((EMAIL_WIDTH-employee.getEmail().length())));
-        System.out.print("| "+employee.getJoiningDate().toString()+" ".repeat((DATE_WIDTH-employee.getJoiningDate().toString().length())));
+        System.out.print("| "+employee.getJoiningDate().toString()+" ".repeat((DATE_WIDTH-employee.getJoiningDate().length())));
         System.out.print("| "+employee.isActiveStatus()+" ".repeat((ACTIVER_STATUS_WIDTH-Boolean.toString(employee.isActiveStatus()).length())));
         System.out.println(" |");
-        System.out.println("-".repeat(TABLE_WIDTH));
+        System.out.println(" ".repeat(LEFT_PADDING)+"-".repeat(TABLE_WIDTH));
             
         }    
+
+        System.out.print("\n\n");
     
     }
 
     /**
     * to print Single Employee object in human readable way 
     * This is a overload method 
-    *
+    * 
     * @param employee
+    * @param message
     */
 
-    public void printDataToTable(Employee employee){
+    public void printDataToTable(Employee employee , String message){
 
         /* ------------------------------------------------------------------------------------
            |ID  |First Name   |Last Name  |Mobile Number |Email  |Joining Date |Active Status |   <-- Format
            ------------------------------------------------------------------------------------
         */
         
-        System.out.println("-".repeat(TABLE_WIDTH));
+        System.out.println(" ".repeat(LEFT_PADDING)+"-".repeat(TABLE_WIDTH));
+        System.out.print(message+" ".repeat(LEFT_PADDING-message.length()));
         System.out.print("| "+employee.getId()+" ".repeat((ID_WIDTH-employee.getId().length())));
         System.out.print("| "+employee.getFirstName()+" ".repeat((NAME_WIDTH-employee.getFirstName().length())));
         System.out.print("| "+employee.getLastName()+" ".repeat((NAME_WIDTH-employee.getLastName().length())));
         System.out.print("| "+employee.getMobileNumber()+" ".repeat((MOBILE_NUMBER_WIDTH-employee.getMobileNumber().length())));
         System.out.print("| "+employee.getEmail()+" ".repeat((EMAIL_WIDTH-employee.getEmail().length())));
-        System.out.print("| "+employee.getJoiningDate().toString()+" ".repeat((DATE_WIDTH-employee.getJoiningDate().toString().length())));
+        System.out.print("| "+employee.getJoiningDate().toString()+" ".repeat((DATE_WIDTH-employee.getJoiningDate().length())));
         System.out.print("| "+employee.isActiveStatus()+" ".repeat((ACTIVER_STATUS_WIDTH-Boolean.toString(employee.isActiveStatus()).length())));
         System.out.println(" |");
-        System.out.println("-".repeat(TABLE_WIDTH)); 
+        System.out.println(" ".repeat(LEFT_PADDING)+"-".repeat(TABLE_WIDTH)); 
     
     }
 
@@ -254,61 +285,66 @@ public class EmployeeController {
         
            
 
-        String id;
-        String firstName;
-        String lastName;
-        String mobileNumber;
-        String email;
-        String joiningDate;
-        String activeStatus;
-        String exitOption; // to exit data entry
-        String validation;
+            String id;
+            String firstName;
+            String lastName;
+            String mobileNumber;
+            String email;
+            String joiningDate;
+            String activeStatus;
+            String exitOption; // to exit data entry
+            String validation;
 
         
-        do {
-            
-            System.out.print("Enter Employee ID : ");
-            id = inputReader.readLine();
-             
-            System.out.print("Enter Employee First Name : ");
-            firstName = inputReader.readLine();
+            do {
+                
+                System.out.print("Enter Employee ID : ");
+                id = inputReader.readLine().trim();
+                
+                System.out.print("Enter Employee First Name : ");
+                firstName = inputReader.readLine().trim();
+                firstName = firstName.substring(0,1).toUpperCase()+firstName.substring(1).toLowerCase();
 
-            System.out.print("Enter Employee Last Name : ");
-            lastName = inputReader.readLine();
+                System.out.print("Enter Employee Last Name : ");
+                lastName = inputReader.readLine().trim();
+                lastName = lastName.substring(0,1).toUpperCase()+lastName.substring(1).toLowerCase();
 
-            System.out.print("Enter Employee Mobile Number : ");
-            mobileNumber = inputReader.readLine();
+                System.out.print("Enter Employee Mobile Number : ");
+                mobileNumber = inputReader.readLine().trim();
 
-            System.out.print("Enter Employee email : ");
-            email = inputReader.readLine();
+                System.out.print("Enter Employee email : ");
+                email = inputReader.readLine().trim();
 
-            System.out.print("Enter Employee Joining Date (YYYY-MM-DD): ");
-            joiningDate = inputReader.readLine();
+                System.out.print("Enter Employee Joining Date (YYYY-MM-DD): ");
+                joiningDate = inputReader.readLine().trim();
 
-            System.out.print("Enter Employeed Active Status (true/false) : ");
-            activeStatus = inputReader.readLine();
+                System.out.print("Enter Employeed Active Status (true/false) : ");
+                activeStatus = inputReader.readLine().trim().toLowerCase();
 
-            Employee employee = new Employee(id,firstName,lastName,mobileNumber,email,LocalDate.parse(joiningDate),Boolean.parseBoolean(activeStatus));
+                System.out.println();
 
-            //validate employee here
-            validation = ValidationUtil.validateEmployeeObject(employee);
-                    if (validation.compareTo(VALID)==0) {
-                        
-                        // if data is valid it's added to employee list which is further saved to database
-                        employees.add(employee);
-                        
-                    }else {
+                Employee employee = new Employee(id,firstName,lastName,mobileNumber,email,joiningDate,Boolean.parseBoolean(activeStatus));
 
-                        // if data is not valid the message is printed
-                        printDataToTable(employee);
-                        System.out.println(validation);
+                //validate employee here
+                validation = ValidationUtil.validateEmployeeObject(employee);
+                        if (validation.compareTo(VALID)==0) {
+                            
+                            // if data is valid it's added to employee list which is further saved to database
+                            employees.add(employee);
+                            
+                        }else {
 
-                    }
-            
-            System.out.print("Do you wish to enter another entry (y/n) : ");
-            exitOption = inputReader.readLine();
+                            // if data is not valid the message is printed
+                            printDataToTable(employee,"Invalid Entry ---->");
+                            System.out.println("\nError Message : " +validation);
 
-        } while (exitOption.compareTo("y")==0);
+                        }
+                
+                System.out.print("Do you wish to enter another entry (y/n) : ");
+                exitOption = inputReader.readLine();
+                System.out.println();
+
+            } while (exitOption.compareTo("y")==0);
             
         } catch (Exception e) {
             
@@ -324,7 +360,7 @@ public class EmployeeController {
     *
     * @param employee
     */
-    
+
     public void insertIntoCsvFile(ArrayList<Employee> employees){
 
        List<String> lines = new ArrayList<>();
@@ -334,7 +370,7 @@ public class EmployeeController {
         for (Employee employee: employees) {
           
             line = String.format("%s,%s,%s,%s,%s,%s,%s\n",employee.getId(),employee.getFirstName(),employee.getLastName(),
-                employee.getMobileNumber(),employee.getEmail(),employee.getJoiningDate().toString(),Boolean.toString(employee.isActiveStatus()));
+                employee.getMobileNumber(),employee.getEmail(),employee.getJoiningDate(),Boolean.toString(employee.isActiveStatus()));
             
             lines.add(line);
             

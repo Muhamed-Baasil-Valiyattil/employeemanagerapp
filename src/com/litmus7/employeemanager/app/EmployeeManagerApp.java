@@ -31,6 +31,7 @@ public class EmployeeManagerApp {
             System.out.print("Enter command : ");
 
             command = input.nextInt(); // Read user command
+            System.out.println();
 
             switch (command) {
 
@@ -38,41 +39,49 @@ public class EmployeeManagerApp {
                 case 1:  // Load Text File into a raw Text, Text is later processed to extract employee fields. 
                     
                     // Loads '$' delimiter file into formatted output in Console.
-                    System.out.print("\nEnter the path of file to load the data : ");
+                    System.out.print("Enter the path of file to load the data : ");
+                    input.nextLine();
                     path = input.nextLine();
-                    System.out.println();
+                    System.out.println("\n");
                     employees = controller.loadEmployeeDataFromTextFile(path);  // Extracted employee data is converted into employee objects
+                    System.out.println("Valid Entries : \n");
                     controller.printDataToTable(employees);
  
                     // Save Loaded File into Csv
                     System.out.print("\nDo You Want To Save the Data into a csv file (enter y if yes): ");
                     save = input.next().charAt(0);
+
                     if(save == 'y'){
                         controller.writeEmployeeDataToCsvFile(employees);
                     }else{
                         ValidationUtil.deleteFromCache(employees);
                     }
                     
+                    System.out.print("\n\n");
+
                     break;
 
                 case 2:
 
                    
-                    System.out.println("Entry to database");
+                    System.out.println("<"+"-".repeat(24)+"Entry to database"+"-".repeat(24)+">"+"\n");
                     employees = controller.readDataFromUser();  //Reads Employee entry from User
                     controller.printDataToTable(employees);     //Read entries are displayed to the user
 
                     //If user accepts the entries are saved to csv file
                     System.out.print("\nDo you want to insert these entries into databse (enter y if yes): ");
-                    System.out.println();
                     save = input.next().charAt(0);
+                    System.out.println();
+                    
                     if(save == 'y'){
                         System.out.println("Inserting  into database");
                         controller.insertIntoCsvFile(employees);
                     }else{
                         ValidationUtil.deleteFromCache(employees);
                     }
-                    break;
+
+                    System.out.print("\n\n");
+                    break;   
 
                 case 3:
 
