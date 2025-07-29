@@ -1,7 +1,5 @@
 package com.litmus7.employeemanager.dto;
 
-import java.time.LocalDate;
-
 public class Employee {
 
     private String id;
