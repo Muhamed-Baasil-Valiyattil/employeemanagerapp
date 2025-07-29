@@ -55,7 +55,7 @@ public class EmployeeController {
 
         }
 
-            //convert lines read from text file into employee object
+            //convert lines read from text file into employee objects
 
             for (String line : lines) {
 
@@ -195,12 +195,14 @@ public class EmployeeController {
 
     public void printDataToTable(ArrayList<Employee> employees){
 
-        /* ------------------------------------------------------------------------------------
-           |ID  |First Name   |Last Name  |Mobile Number |Email  |Joining Date |Active Status |   <-- Format
-           ------------------------------------------------------------------------------------
-        */
+        
         
         if (!employees.isEmpty()) {
+
+            /* ------------------------------------------------------------------------------------
+               |ID  |First Name   |Last Name  |Mobile Number |Email  |Joining Date |Active Status |   <-- Format
+               ------------------------------------------------------------------------------------
+            */
 
             System.out.println(" ".repeat(LEFT_PADDING) + "-".repeat(TABLE_WIDTH));
             System.out.print(" ".repeat(LEFT_PADDING) + "| " + "ID" + " ".repeat((ID_WIDTH - "ID".length())));
@@ -214,6 +216,12 @@ public class EmployeeController {
             System.out.println(" ".repeat(LEFT_PADDING) + "-".repeat(TABLE_WIDTH));
             
         }else{
+
+            /* -----------------------------------------------------------------------
+               |                                  Empty                              |   <--- Format
+               -----------------------------------------------------------------------
+            */
+
             
             System.out.println(" ".repeat(LEFT_PADDING) + "-".repeat(EMPTY_TABLE_WIDTH));
             System.out.print(" ".repeat(LEFT_PADDING) +"|"+" ".repeat((EMPTY_TABLE_WIDTH/2)-2)+"Empty"+" ".repeat((EMPTY_TABLE_WIDTH/2)-5)+"|\n");
@@ -223,15 +231,15 @@ public class EmployeeController {
         
         for (Employee employee : employees) {
 
-        System.out.print(" ".repeat(LEFT_PADDING)+"| "+employee.getId()+" ".repeat((ID_WIDTH-employee.getId().length())));
-        System.out.print("| "+employee.getFirstName()+" ".repeat((NAME_WIDTH-employee.getFirstName().length())));
-        System.out.print("| "+employee.getLastName()+" ".repeat((NAME_WIDTH-employee.getLastName().length())));
-        System.out.print("| "+employee.getMobileNumber()+" ".repeat((MOBILE_NUMBER_WIDTH-employee.getMobileNumber().length())));
-        System.out.print("| "+employee.getEmail()+" ".repeat((EMAIL_WIDTH-employee.getEmail().length())));
-        System.out.print("| "+employee.getJoiningDate().toString()+" ".repeat((DATE_WIDTH-employee.getJoiningDate().length())));
-        System.out.print("| "+employee.isActiveStatus()+" ".repeat((ACTIVER_STATUS_WIDTH-Boolean.toString(employee.isActiveStatus()).length())));
-        System.out.println(" |");
-        System.out.println(" ".repeat(LEFT_PADDING)+"-".repeat(TABLE_WIDTH));
+            System.out.print(" ".repeat(LEFT_PADDING)+"| "+employee.getId()+" ".repeat((ID_WIDTH-employee.getId().length())));
+            System.out.print("| "+employee.getFirstName()+" ".repeat((NAME_WIDTH-employee.getFirstName().length())));
+            System.out.print("| "+employee.getLastName()+" ".repeat((NAME_WIDTH-employee.getLastName().length())));
+            System.out.print("| "+employee.getMobileNumber()+" ".repeat((MOBILE_NUMBER_WIDTH-employee.getMobileNumber().length())));
+            System.out.print("| "+employee.getEmail()+" ".repeat((EMAIL_WIDTH-employee.getEmail().length())));
+            System.out.print("| "+employee.getJoiningDate().toString()+" ".repeat((DATE_WIDTH-employee.getJoiningDate().length())));
+            System.out.print("| "+employee.isActiveStatus()+" ".repeat((ACTIVER_STATUS_WIDTH-Boolean.toString(employee.isActiveStatus()).length())));
+            System.out.println(" |");
+            System.out.println(" ".repeat(LEFT_PADDING)+"-".repeat(TABLE_WIDTH));
             
         }    
 
@@ -249,9 +257,9 @@ public class EmployeeController {
 
     public void printDataToTable(Employee employee , String message){
 
-        /* ------------------------------------------------------------------------------------
-           |ID  |First Name   |Last Name  |Mobile Number |Email  |Joining Date |Active Status |   <-- Format
-           ------------------------------------------------------------------------------------
+        /*           ------------------------------------------------------------------------------------
+            message  |ID  |First Name   |Last Name  |Mobile Number |Email  |Joining Date |Active Status |   <-- Format
+                     ------------------------------------------------------------------------------------
         */
         
         System.out.println(" ".repeat(LEFT_PADDING)+"-".repeat(TABLE_WIDTH));
@@ -303,11 +311,11 @@ public class EmployeeController {
                 
                 System.out.print("Enter Employee First Name : ");
                 firstName = inputReader.readLine().trim();
-                firstName = firstName.substring(0,1).toUpperCase()+firstName.substring(1).toLowerCase();
+                firstName = firstName.substring(0,1).toUpperCase()+firstName.substring(1).toLowerCase(); // String Capitalization Eg.john --> John
 
                 System.out.print("Enter Employee Last Name : ");
                 lastName = inputReader.readLine().trim();
-                lastName = lastName.substring(0,1).toUpperCase()+lastName.substring(1).toLowerCase();
+                lastName = lastName.substring(0,1).toUpperCase()+lastName.substring(1).toLowerCase();    // String Capitalization Eg.cena --> Cena
 
                 System.out.print("Enter Employee Mobile Number : ");
                 mobileNumber = inputReader.readLine().trim();
@@ -319,7 +327,7 @@ public class EmployeeController {
                 joiningDate = inputReader.readLine().trim();
 
                 System.out.print("Enter Employeed Active Status (true/false) : ");
-                activeStatus = inputReader.readLine().trim().toLowerCase();
+                activeStatus = inputReader.readLine().trim().toLowerCase();    // lowercasing : eg. True / False / TRUE ----> true / false / true
 
                 System.out.println();
 

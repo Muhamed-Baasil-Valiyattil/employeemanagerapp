@@ -48,13 +48,17 @@ public class EmployeeManagerApp {
                     controller.printDataToTable(employees);
  
                     // Save Loaded File into Csv
-                    System.out.print("\nDo You Want To Save the Data into a csv file (enter y if yes): ");
+                    System.out.print("\nDo You Want To Save the Data into a csv file (enter y if yes): "); // Asks user if he want to save Valid Entries
                     save = input.next().charAt(0);
 
-                    if(save == 'y'){
+                    if(save == 'y'){   // if yes Entries are written into file
+
                         controller.writeEmployeeDataToCsvFile(employees);
-                    }else{
+
+                    }else{ //In case user doesn't want to save into file the entries should be deleted from cache
+
                         ValidationUtil.deleteFromCache(employees);
+
                     }
                     
                     System.out.print("\n\n");
@@ -68,15 +72,18 @@ public class EmployeeManagerApp {
                     employees = controller.readDataFromUser();  //Reads Employee entry from User
                     controller.printDataToTable(employees);     //Read entries are displayed to the user
 
-                    //If user accepts the entries are saved to csv file
+                    // Asks user if he want to save Valid Entries 
                     System.out.print("\nDo you want to insert these entries into databse (enter y if yes): ");
                     save = input.next().charAt(0);
                     System.out.println();
                     
-                    if(save == 'y'){
+                    if(save == 'y'){ //If user accepts the entries are saved to csv file
+
                         System.out.println("Inserting  into database");
                         controller.insertIntoCsvFile(employees);
-                    }else{
+
+                    }else{  
+                        //In case user doesn't want to save into file the entries should be deleted from cache
                         ValidationUtil.deleteFromCache(employees);
                     }
 
