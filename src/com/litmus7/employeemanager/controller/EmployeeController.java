@@ -11,6 +11,10 @@ import com.litmus7.employeemanager.dto.Employee;
 import com.litmus7.employeemanager.util.TextFileUtil;
 import com.litmus7.employeemanager.util.ValidationUtil;
 
+/**
+* Controller class coordinates handles backend. 
+*/
+
 public class EmployeeController {
 
     private static final int ID_WIDTH = 5;
@@ -24,6 +28,14 @@ public class EmployeeController {
     private static final String COMMA_DELIMITER = ",";
     private static final String VALID = "valid";
 
+
+     
+    /**
+    * loads employee data from text file with '$' delimiter
+    *
+    * @param filepath
+    * @return employees
+    */
 
     public ArrayList<Employee> loadEmployeeDataFromTextFile(String filepath){
 
@@ -85,6 +97,13 @@ public class EmployeeController {
             return employees;      
         } 
 
+         
+    /**
+    * loads employee data from Csv file , Csv file has ',' delimiter
+    * file path is predefined
+    * @return employees 
+    */
+
     public ArrayList<Employee> loadEmployeeDataFromCsvFile(){
         
         List<String> lines = new ArrayList<>();
@@ -120,6 +139,14 @@ public class EmployeeController {
         return employees;
     }
 
+    /**
+    * writes employee object into csv file
+    * "%s,%s,%s,%s,%s,%s,%s" format is used
+    * Non String types like date and boolean values are parsed into String values
+    *
+    * @param employees
+    */
+
     public void writeEmployeeDataToCsvFile(ArrayList<Employee> employees){
 
         List<String> lines = new ArrayList<>();
@@ -152,7 +179,12 @@ public class EmployeeController {
     }
     
 
-    // to print List of Employee objects in human readable way
+    /**
+    * to print List of Employee objects in human readable way
+    *
+    * @param employees
+    */
+
     public void printDataToTable(ArrayList<Employee> employees){
 
         /* ------------------------------------------------------------------------------------
@@ -174,14 +206,17 @@ public class EmployeeController {
         System.out.println(" |");
         System.out.println("-".repeat(TABLE_WIDTH));
             
-        }
-        
-        
+        }    
     
     }
 
+    /**
+    * to print Single Employee object in human readable way 
+    * This is a overload method 
+    *
+    * @param employee
+    */
 
-     // to print Single Employee object in human readable way 
     public void printDataToTable(Employee employee){
 
         /* ------------------------------------------------------------------------------------
@@ -201,6 +236,12 @@ public class EmployeeController {
         System.out.println("-".repeat(TABLE_WIDTH)); 
     
     }
+
+    /**
+    * read employee object data from user and validates it
+    *
+    * @return employee
+    */
 
     public ArrayList<Employee> readDataFromUser(){
 
@@ -277,6 +318,13 @@ public class EmployeeController {
         return employees;
     }
 
+    /**
+    * employee objects are appended to csv file
+    * "%s,%s,%s,%s,%s,%s,%s\n" format is used for csv
+    *
+    * @param employee
+    */
+    
     public void insertIntoCsvFile(ArrayList<Employee> employees){
 
        List<String> lines = new ArrayList<>();

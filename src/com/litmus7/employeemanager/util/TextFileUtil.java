@@ -8,11 +8,23 @@ import java.io.PrintWriter;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+* Handles raw I/O opeartions like write , read and append
+* 
+*/
 
 public class TextFileUtil {
 
     private static final String TARGET_CSV = "employees.csv";
     private static final String TEXT_FILE_PATH = "employees.txt";
+
+    /**
+    * read raw data from text file
+    * file is read from specific path if user has specified the path , else a pre-defined path is used
+    *
+    * @param filepath
+    * @return lines
+    */
 
     public static List<String> dataFromTextFile(String filepath) throws IOException{
 
@@ -31,7 +43,14 @@ public class TextFileUtil {
 	   
     }
 
-    public static List<String> dataFromCsvFile() throws IOException{ //same as dataFromTextFile method but there is no user specified path
+    /**
+    * read raw data from csv file
+    * here path is pre-defined
+    *
+    * @return lines
+    */
+
+    public static List<String> dataFromCsvFile() throws IOException{ 
 
         BufferedReader reader = new BufferedReader(new FileReader(TARGET_CSV));
         List<String> lines = new ArrayList<>();
@@ -49,6 +68,14 @@ public class TextFileUtil {
 	   
     }
     
+
+    /**
+    * write list of lines of String type into a default file (csv file)
+    * file is overwritten
+    *
+    * @param lines
+    */
+
     public static void parseToCsv(List<String> lines) throws IOException{
 
         PrintWriter writer = new PrintWriter(TARGET_CSV);
@@ -61,6 +88,13 @@ public class TextFileUtil {
         writer.close();
 
     }
+
+    /**
+    * write list of lines of String type into a default file (csv file)
+    * file is appended
+    *
+    * @param lines
+    */
 
     public static void appendToCsv(List<String> lines) throws IOException{
 
