@@ -15,9 +15,6 @@ import java.util.List;
 
 public class TextFileUtil {
 
-    private static final String TARGET_CSV = "employees.csv";
-    private static final String TEXT_FILE_PATH = "employees.txt";
-
     /**
     * read raw data from text file
     * file is read from specific path if user has specified the path , else a pre-defined path is used
@@ -27,9 +24,9 @@ public class TextFileUtil {
     * @return lines , list of Strings read from file, each String is a line in file
     */
 
-    public static List<String> dataFromTextFile(String filepath) throws IOException{
+    public static List<String> getdataFromFile(String filepath) throws IOException{
 
-        BufferedReader reader = new BufferedReader(new FileReader(filepath.trim().isEmpty()? TEXT_FILE_PATH : filepath));
+        BufferedReader reader = new BufferedReader(new FileReader(filepath.trim()));
         List<String> lines = new ArrayList<>();
         
         String line;
@@ -39,31 +36,6 @@ public class TextFileUtil {
             lines.add(line);
             
         }
-        reader.close();
-        return lines;
-	   
-    }
-
-    /**
-    * read raw data from csv file
-    * here path is pre-defined that is TARGET_CSV
-    * @throws IOException In case error occurs during opening or reading of file
-    * @return lines , list of Strings read from file, each String is a line in file
-    */
-
-    public static List<String> dataFromCsvFile() throws IOException{ 
-
-        BufferedReader reader = new BufferedReader(new FileReader(TARGET_CSV));
-        List<String> lines = new ArrayList<>();
-        
-        String line;
-
-        while ((line = reader.readLine()) != null) {
-
-            lines.add(line);
-            
-        }
-
         reader.close();
         return lines;
 	   
@@ -77,9 +49,9 @@ public class TextFileUtil {
     * @throws IOException In case error occurs during opening or writing to file
     */
 
-    public static void parseToCsv(List<String> lines) throws IOException{
+    public static void writeDataToFile(List<String> lines , String filepath) throws IOException{
 
-        PrintWriter writer = new PrintWriter(TARGET_CSV);
+        PrintWriter writer = new PrintWriter(filepath);
 
         for (String line : lines) {
 
@@ -98,14 +70,10 @@ public class TextFileUtil {
     * @throws IOException In case error occurs during opening or writing to file
     */
 
-    public static void appendToCsv(List<String> lines) throws IOException{
+    public static void appendDataToFile(String line , String filePath) throws IOException{
 
-        PrintWriter writer = new PrintWriter(new FileWriter(TARGET_CSV,true));
-        for (String line : lines) {
-
-            writer.printf(line);
-            
-        }
+        PrintWriter writer = new PrintWriter(new FileWriter(filePath,true));
+        writer.printf(line);     
         writer.close();
 
     }
