@@ -17,8 +17,8 @@ public class EmployeeManagerApp {
         List<Employee> employees = new ArrayList<>();
 
         boolean exit = false;          //for exiting the application
-        int command;                   //options to opt in menu
-        char save;    
+        int command;
+        char save;                   //options to opt in menu
         String path;                   //path of user specified .txt file
 
         while (!exit) {
@@ -44,28 +44,29 @@ public class EmployeeManagerApp {
                     input.nextLine();
                     path = input.nextLine();
                     System.out.println("\n");
+
                     try {
 
                         employees = controller.loadEmployeeDataFromTextFile(path);  // Extracted employee data is converted into employee objects
 
                         for (Employee employee : employees) {
 
-                        System.out.println("ID : "+employee.getId());
-                        System.out.println("First Name : "+employee.getFirstName());
-                        System.out.println("Last Name : "+employee.getLastName());
-                        System.out.println("Email : "+employee.getEmail());
-                        System.out.println("Mobile Number : "+employee.getMobileNumber());
-                        System.out.println("Joining Date : "+employee.getJoiningDate());
-                        System.out.println("Active Status : "+employee.isActiveStatus()+"\n");
+                            System.out.println("ID : "+employee.getId());
+                            System.out.println("First Name : "+employee.getFirstName());
+                            System.out.println("Last Name : "+employee.getLastName());
+                            System.out.println("Email : "+employee.getEmail());
+                            System.out.println("Mobile Number : "+employee.getMobileNumber());
+                            System.out.println("Joining Date : "+employee.getJoiningDate());
+                            System.out.println("Active Status : "+employee.isActiveStatus()+"\n");
 
                         }
 
-                        // Save Loaded File into Csv
+                        //Save Loaded File into Csv
                         System.out.print("\nDo You Want To Save the Data into a csv file (enter y if yes): "); // Asks user if he want to save Valid Entries
                         save = input.next().charAt(0);
 
-                        if(save == 'y'){   // if yes Entries are written into file
-                            
+                        if(save == 'y'){   // if yes Entries are written into file     
+
                             input.nextLine();
                             System.out.print("\nEnter file path : ");
                             path = input.nextLine();
@@ -79,8 +80,8 @@ public class EmployeeManagerApp {
                         
                     } catch (Exception e) {
 
-                        System.out.print(e+"\n");
-                        
+                        System.out.print(e.getMessage()+"\n");
+
                     }
 
                     break;
@@ -136,9 +137,6 @@ public class EmployeeManagerApp {
                     System.out.println();
 
                 }
-                    
-                    
-
                     
                     break;   
 
