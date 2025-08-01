@@ -30,7 +30,8 @@ public class EmployeeController {
         List<String> lines = new ArrayList<>();
         List<Employee> employees = new ArrayList<>();
 
-        lines = TextFileUtil.getdataFromFile(filepath); 
+        lines = TextFileUtil.getdataFromFile(filepath);
+        ValidationUtil.resetIdCache(); 
 
         for (String line : lines) {
 
@@ -65,32 +66,24 @@ public class EmployeeController {
     * @param employees list of employee objects to write to csv file
     */
 
-    public void writeEmployeeDataToCsvFile(List<Employee> employees, String filePath) throws IOException{
+    public void writeEmployeeDataToCsvFile(List<Employee> employees, String filePath) throws IOException , ValidationException{
 
         List<String> lines = new ArrayList<>();
         String line;
 
         // List of lines of type String in csv format added to List lines.
         for (Employee employee: employees) {
+
           
             line = String.format("%d,%s,%s,%s,%s,%s,%b\n",employee.getId(),employee.getFirstName(),employee.getLastName(),
                 employee.getMobileNumber(),employee.getEmail(),employee.getJoiningDate().format(DateTimeFormatter.ISO_DATE),employee.isActiveStatus());
             
             lines.add(line);
-            ValidationUtil.idCache.add(employee.getId());
             
         }
-
-        try {
 
             //List<String> is wrritten to csv file
             TextFileUtil.writeDataToFile(lines , filePath);
-            
-        } catch (IOException e) {
-
-            System.out.println("Error : "+e.getMessage());
-            
-        }
 
         
 
@@ -113,7 +106,6 @@ public class EmployeeController {
                                     entries[3],entries[4],entries[5],entries[6]);
         
         TextFileUtil.appendDataToFile(line, filepath);
-        ValidationUtil.idCache.add(Integer.parseInt(entries[0]));
 
     }
 }

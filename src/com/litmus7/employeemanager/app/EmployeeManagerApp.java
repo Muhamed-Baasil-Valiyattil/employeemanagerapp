@@ -16,10 +16,10 @@ public class EmployeeManagerApp {
         Scanner input = new Scanner(System.in);                       // To read user input
         List<Employee> employees = new ArrayList<>();
 
-        boolean exit = false;          //for exiting the application
-        int command;
-        char save;                   //options to opt in menu
-        String path;                   //path of user specified .txt file
+        boolean exit = false;         //for exiting the application
+        int command;                  //options to opt in menu
+        String path;                 //path of user specified .txt file
+        String targetCsvPath = "employees.csv";
 
         while (!exit) {
             
@@ -61,22 +61,13 @@ public class EmployeeManagerApp {
 
                         }
 
-                        //Save Loaded File into Csv
-                        System.out.print("\nDo You Want To Save the Data into a csv file (enter y if yes): "); // Asks user if he want to save Valid Entries
-                        save = input.next().charAt(0);
+                        System.out.println("\nWriting to Csv");
 
-                        if(save == 'y'){   // if yes Entries are written into file     
-
-                            input.nextLine();
-                            System.out.print("\nEnter file path : ");
-                            path = input.nextLine();
-                            System.out.println();
-
-                            controller.writeEmployeeDataToCsvFile(employees, path);
-
-                        }
+                        controller.writeEmployeeDataToCsvFile(employees, targetCsvPath);
+                     
+                         System.out.println("\nWriting Successful");
                         
-                        System.out.print("\n\n");
+                        System.out.println("\n");
                         
                     } catch (Exception e) {
 
