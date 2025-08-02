@@ -79,6 +79,7 @@ public class EmployeeController {
                 employee.getMobileNumber(),employee.getEmail(),employee.getJoiningDate().format(DateTimeFormatter.ISO_DATE),employee.isActiveStatus());
             
             lines.add(line);
+            ValidationUtil.idCache.add(employee.getId());
             
         }
 
@@ -106,6 +107,7 @@ public class EmployeeController {
                                     entries[3],entries[4],entries[5],entries[6]);
         
         TextFileUtil.appendDataToFile(line, filepath);
+        ValidationUtil.idCache.add(Integer.parseInt(entries[0]));
 
     }
 }

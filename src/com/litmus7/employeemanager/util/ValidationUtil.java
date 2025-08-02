@@ -14,7 +14,11 @@ import com.litmus7.employeemanager.exception.*;
 public class ValidationUtil {
 
 
+<<<<<<< HEAD
     private static HashSet<Integer> idCache = new HashSet<>();
+=======
+    public static HashSet<Integer> idCache = new HashSet<>();
+>>>>>>> 8f46a01fa3766606986912eac82bf43c56646d81
     // private static HashSet<String> mobileNumberCache = new HashSet<>();
     // private static HashSet<String> emailCache = new HashSet<>(); 
     // private static LocalDate companyCreationDate = LocalDate.parse("2009-06-30");
@@ -36,11 +40,17 @@ public class ValidationUtil {
 
             if (idCache.contains(id)) {
                 
+<<<<<<< HEAD
                 throw new ValidationException("ID ",value+": is duplicate !");
 
             }
 
             idCache.add(id);
+=======
+                throw new ValidationException("ID", value+" is duplicate !");
+
+            }
+>>>>>>> 8f46a01fa3766606986912eac82bf43c56646d81
             
 
         } catch (NumberFormatException e) {
