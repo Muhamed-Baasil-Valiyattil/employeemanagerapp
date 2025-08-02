@@ -14,17 +14,14 @@ import com.litmus7.employeemanager.exception.*;
 public class ValidationUtil {
 
 
-<<<<<<< HEAD
     private static HashSet<Integer> idCache = new HashSet<>();
-=======
-    public static HashSet<Integer> idCache = new HashSet<>();
->>>>>>> 8f46a01fa3766606986912eac82bf43c56646d81
     // private static HashSet<String> mobileNumberCache = new HashSet<>();
     // private static HashSet<String> emailCache = new HashSet<>(); 
     // private static LocalDate companyCreationDate = LocalDate.parse("2009-06-30");
     private static LocalDate todayDate = LocalDate.now();
     
 
+    //Id Validation
 
     public static void validateID(String value) throws ValidationException{
 
@@ -40,19 +37,13 @@ public class ValidationUtil {
 
             if (idCache.contains(id)) {
                 
-<<<<<<< HEAD
+
                 throw new ValidationException("ID ",value+": is duplicate !");
 
             }
 
             idCache.add(id);
-=======
-                throw new ValidationException("ID", value+" is duplicate !");
-
-            }
->>>>>>> 8f46a01fa3766606986912eac82bf43c56646d81
             
-
         } catch (NumberFormatException e) {
 
             throw new ValidationException("ID",value +" must be a valid integer value", e);
@@ -60,6 +51,8 @@ public class ValidationUtil {
         }
 
     }
+
+    //Name Validation
 
 
     public static void validateName(String value) throws ValidationException {
@@ -77,6 +70,8 @@ public class ValidationUtil {
 
     }
 
+    //Email Validation
+
     public static void validateEmail(String value) throws ValidationException{
 
         if (value.isEmpty()) {
@@ -93,6 +88,8 @@ public class ValidationUtil {
 
     }
 
+    //Mobile Number Validaiton
+
     public static void validateMobileNumber(String value) throws ValidationException{
 
         if (value.isEmpty()) {
@@ -107,6 +104,8 @@ public class ValidationUtil {
         }
 
     }
+
+    //Joining Date Validation
 
     public static void validateJoiningDate(String value) throws ValidationException{
 
@@ -127,6 +126,8 @@ public class ValidationUtil {
 
     }
 
+    //Active Status Validation
+
     public static void validateActiveStatus(String value) throws ValidationException{
 
         if(!((value.compareTo("true")==0) || (value.compareTo("false")==0))){
@@ -135,6 +136,8 @@ public class ValidationUtil {
 
         }
     }
+
+    //To reset the Cache
 
     public static void resetIdCache(){
         idCache.clear();

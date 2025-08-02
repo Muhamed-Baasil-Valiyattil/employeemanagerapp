@@ -46,12 +46,13 @@ public class TextFileUtil {
     * write list of lines of String type into a default file (csv file)
     * file is overwritten
     * @param lines list of String (lines) to write to file
+    * @param filePath path of file to write the data
     * @throws IOException In case error occurs during opening or writing to file
     */
 
-    public static void writeDataToFile(List<String> lines , String filepath) throws IOException{
+    public static void writeDataToFile(List<String> lines , String filePath) throws IOException{
 
-        PrintWriter writer = new PrintWriter(filepath);
+        PrintWriter writer = new PrintWriter(filePath);
 
         for (String line : lines) {
 
@@ -66,7 +67,8 @@ public class TextFileUtil {
     * write list of lines of String type into a default file (csv file)
     * file is appended
     *
-    * @param lines list of String (lines) to write to file
+    * @param line String that is appended to file
+    * @param filePath path of file to append the data
     * @throws IOException In case error occurs during opening or writing to file
     */
 
