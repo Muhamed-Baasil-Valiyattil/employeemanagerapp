@@ -80,7 +80,7 @@ public class ValidationUtil {
             
         }
 
-        if (!value.matches("^[\\w.-]+@[\\w.-]+\\.[a-zA-Z]{2,}")) {
+        if (!value.matches("^[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\\.(com|in|org|net)$")) {
             
             throw new ValidationException("Email",value+ " format is incorrect ,format must be : user@domain.com");
         }
