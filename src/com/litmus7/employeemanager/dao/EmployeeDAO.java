@@ -1,7 +1,6 @@
 package com.litmus7.employeemanager.dao;
 
 import java.sql.*;
-import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -66,26 +65,29 @@ public class EmployeeDAO {
         try {
 
             PreparedStatement myStmt = myConn.prepareStatement("SELECT * FROM employee"+
-                                                                "WHERE id=?");
+                                                                " WHERE id=?");
             
             myStmt.setInt(1, empid);                                                    
             ResultSet myRes = myStmt.executeQuery();
 
-            employee.setId(myRes.getInt("id"));
-            employee.setFirstName(myRes.getString("first_name"));
-            employee.setLastName(myRes.getString("last_name"));
-            employee.setMobileNumber(myRes.getString("mobile_number"));
-            employee.setEmail(myRes.getString("email"));
-            
-            Date sqlDate = myRes.getDate("joining_date");
-            if (sqlDate != null) {
-                employee.setJoiningDate(sqlDate.toLocalDate());
+            if(myRes.next()){
+                employee.setId(myRes.getInt("id"));
+                employee.setFirstName(myRes.getString("first_name"));
+                employee.setLastName(myRes.getString("last_name"));
+                employee.setMobileNumber(myRes.getString("mobile_number"));
+                employee.setEmail(myRes.getString("email"));
+                
+                Date sqlDate = myRes.getDate("joining_date");
+                if (sqlDate != null) {
+                    employee.setJoiningDate(sqlDate.toLocalDate());
+                }
+                employee.setActiveStatus(myRes.getBoolean("active_status"));
             }
-            employee.setActiveStatus(myRes.getBoolean("active_status"));
+            
 
 
         } catch (Exception e) {
-            System.out.print(e.getMessage());
+            System.out.print("Error : " + e.getMessage());
         }
 
         return employee;

@@ -1,9 +1,10 @@
 package com.litmus7.employeemanager.app;
 
-import java.sql.Connection;
-import java.sql.DriverManager;
+import java.util.ArrayList;
+import java.util.List;
 
 import com.litmus7.employeemanager.dao.EmployeeDAO;
+import com.litmus7.employeemanager.dto.Employee;
 
 public class EmployeeManagerApp {
 
@@ -11,7 +12,37 @@ public class EmployeeManagerApp {
 
         
         EmployeeDAO test = new EmployeeDAO();
-        test.getAllEmployees();
+        List<Employee> employees = new ArrayList<>();
+        employees = test.getAllEmployees();
+
+            for (Employee employee : employees) {
+
+                System.out.println("*".repeat(25));
+                System.out.println("ID : "+employee.getId());
+                System.out.println("First Name : "+employee.getFirstName());
+                System.out.println("Last Name : "+employee.getLastName());
+                System.out.println("Email : "+employee.getEmail());
+                System.out.println("Mobile Number : "+employee.getMobileNumber());
+                System.out.println("Joining Date : "+employee.getJoiningDate());
+                System.out.println("Active Status : "+employee.isActiveStatus());
+                System.out.println("*".repeat(25)+"\n");
+
+            }
+
+        System.out.println("Next Feature");
+        Employee employee = new Employee();
+        employee = test.gteEmployeeById(4);
+
+        System.out.println("*".repeat(25));
+        System.out.println("ID : "+employee.getId());
+        System.out.println("First Name : "+employee.getFirstName());
+        System.out.println("Last Name : "+employee.getLastName());
+        System.out.println("Email : "+employee.getEmail());
+        System.out.println("Mobile Number : "+employee.getMobileNumber());
+        System.out.println("Joining Date : "+employee.getJoiningDate());
+        System.out.println("Active Status : "+employee.isActiveStatus());
+        System.out.println("*".repeat(25)+"\n");
+
 
         
         
