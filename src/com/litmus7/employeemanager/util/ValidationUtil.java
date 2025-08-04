@@ -15,9 +15,6 @@ public class ValidationUtil {
 
 
     private static HashSet<Integer> idCache = new HashSet<>();
-    // private static HashSet<String> mobileNumberCache = new HashSet<>();
-    // private static HashSet<String> emailCache = new HashSet<>(); 
-    // private static LocalDate companyCreationDate = LocalDate.parse("2009-06-30");
     private static LocalDate todayDate = LocalDate.now();
     
 
