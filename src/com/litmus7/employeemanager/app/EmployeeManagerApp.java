@@ -34,6 +34,7 @@ public class EmployeeManagerApp {
                     +"6. Exit Apllication");
 
             System.out.print("Enter Choice : ");
+            
             userChoice = input.nextInt();
 
             switch (userChoice) {
@@ -291,7 +292,6 @@ public class EmployeeManagerApp {
         input.close();               
             
     }
-
 
 }
     

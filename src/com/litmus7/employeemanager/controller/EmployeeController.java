@@ -5,6 +5,7 @@ import java.util.List;
 
 import com.litmus7.employeemanager.dto.Employee;
 import com.litmus7.employeemanager.dto.EmployeeResponse;
+import com.litmus7.employeemanager.exception.ValidationException;
 import com.litmus7.employeemanager.services.EmployeeService;
 
 /**
@@ -26,10 +27,10 @@ public class EmployeeController {
             response.setStatusCode(SUCCESS_STATUS_CODE);
             response.setSuccessMessage("Employee Information Inserted Successfully!");
 
-        } catch (SQLException e) {
+        } catch (SQLException | ValidationException e) {
             response.setStatusCode(ERROR_STATUS_CODE);
             response.setErrorMessage("Employee Information Insertion Failed : "+e.getMessage());
-        }
+        } 
 
         return response;      
     }
@@ -91,7 +92,7 @@ public class EmployeeController {
             employeeService.updateEmployee(employee);
             response.setStatusCode(SUCCESS_STATUS_CODE);
             response.setSuccessMessage("Update Successful !");
-        } catch (Exception e) {
+        } catch (SQLException | ValidationException e) {
             response.setStatusCode(ERROR_STATUS_CODE);
             response.setErrorMessage("Update Failed : "+e.getMessage());
             
