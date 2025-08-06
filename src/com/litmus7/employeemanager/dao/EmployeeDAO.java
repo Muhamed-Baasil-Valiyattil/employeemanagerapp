@@ -1,62 +1,79 @@
 package com.litmus7.employeemanager.dao;
 
+
 import java.io.FileInputStream;
-import java.io.IOException;
-import java.sql.*;
+import java.sql.Connection;
+import java.sql.Date;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.sql.Statement;
+import java.sql.Types;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Properties;
 
 import com.litmus7.employeemanager.dto.Employee;
+import com.litmus7.employeemanager.util.DatabaseConnectionUtil;
 
 public class EmployeeDAO {
 
-    private Connection getConnection() throws SQLException {
+    private static final String URL;
+    private static final String USERNAME;
+    private static final String PASSWORD;
+    private static final String CONFIG_FILE = "empdb.properties";
+    
+    static {
 
-	    Properties properties = new Properties();
-	    try (FileInputStream fileInputStream = new FileInputStream("empdb.properties")) {
-	        properties.load(fileInputStream);
-	    }
-	    catch (IOException e) {
-	        throw new SQLException("Failed to load database properties", e);
-	    }
+        Properties properties = new Properties();
+        
+        try (FileInputStream fileInputStream = new FileInputStream(CONFIG_FILE)) {
+            
+            properties.load(fileInputStream);
+            
+            URL = properties.getProperty("empdburl");
+            if (URL == null) throw new RuntimeException("empdburl not found in properties");
+            
+            USERNAME = properties.getProperty("user");
+            if (USERNAME == null) throw new RuntimeException("user not found in properties");
+            
+            PASSWORD = properties.getProperty("password");
+            if (PASSWORD == null) throw new RuntimeException("password not found in properties");
+            
+        } catch (Exception e) {
+            throw new RuntimeException("Failed to initialize database connection pool", e);
+        }
 
-	    String URL = properties.getProperty("empdburl");
-	    String USERNAME = properties.getProperty("user");
-	    String PASSWORD = properties.getProperty("password");
+    }
 
-	    return DriverManager.getConnection(URL, USERNAME, PASSWORD);
-	}
 
     
     public int createEmployee(Employee employee) throws SQLException{
 
-        int rowsAffected = 0;
-        Connection myConn;
-        String sql = "INSERT INTO employee(id,first_name,last_name,mobile_number,email,joining_date,active_status) VALUES (?,?,?,?,?,?,?)";
-                                                            
-        myConn = getConnection();
+        String insertEmployeeQuery = "INSERT INTO employee(id,first_name,last_name,mobile_number,email,joining_date,active_status) VALUES (?,?,?,?,?,?,?)";
+                          
+        try (Connection connection = DatabaseConnectionUtil.getConnection(URL,USERNAME,PASSWORD);
+             PreparedStatement statement = connection.prepareStatement(insertEmployeeQuery)) {
 
-        PreparedStatement myStmt = myConn.prepareStatement(sql);
-        myStmt.setInt(1, employee.getId());
-        myStmt.setString(2, employee.getFirstName());
-        myStmt.setString(3, employee.getLastName());
-        myStmt.setString(4, employee.getMobileNumber());
-        myStmt.setString(5, employee.getEmail());
-        myStmt.setBoolean(7, employee.isActiveStatus());
+            
+            statement.setInt(1, employee.getId());
+            statement.setString(2, employee.getFirstName());
+            statement.setString(3, employee.getLastName());
+            statement.setString(4, employee.getMobileNumber());
+            statement.setString(5, employee.getEmail());
+            statement.setBoolean(7, employee.isActiveStatus());
 
-        LocalDate joiningDate = employee.getJoiningDate();
-        if (joiningDate != null) {
-            myStmt.setDate(6, java.sql.Date.valueOf(joiningDate));
-        } else {
-            myStmt.setNull(6, Types.DATE);
-        }
-    
-        rowsAffected = myStmt.executeUpdate();
-
-
-        return rowsAffected;
+            LocalDate joiningDate = employee.getJoiningDate();
+            if (joiningDate != null) {
+                statement.setDate(6, java.sql.Date.valueOf(joiningDate));
+            } else {
+                statement.setNull(6, Types.DATE);
+            }
+        
+            return statement.executeUpdate();
+            
+        } 
 
 
     }
@@ -65,116 +82,105 @@ public class EmployeeDAO {
     public List<Employee> getAllEmployees() throws SQLException{
 
         List<Employee> employees = new ArrayList<>();
-        Connection myConn;
-        String sql = "SELECT * FROM employee";
+        String selectEmployeeQuery  = "SELECT id,first_name,last_name,mobile_number,email,joining_date,active_status FROM employee";
 
-        myConn = getConnection();
-        Statement myStmt = myConn.createStatement();
-        ResultSet myRes = myStmt.executeQuery(sql);
+        try (Connection connection = DatabaseConnectionUtil.getConnection(URL,USERNAME,PASSWORD);
+             Statement statment = connection.createStatement();
+             ResultSet resultSet = statment.executeQuery(selectEmployeeQuery)) {
 
-        while (myRes.next()) {
+            while (resultSet.next()) {
 
-            Employee employee = new Employee();
-            employee.setId(myRes.getInt("id"));
-            employee.setFirstName(myRes.getString("first_name"));
-            employee.setLastName(myRes.getString("last_name"));
-            employee.setMobileNumber(myRes.getString("mobile_number"));
-            employee.setEmail(myRes.getString("email"));
+                Employee employee = new Employee();
+                employee.setId(resultSet.getInt("id"));
+                employee.setFirstName(resultSet.getString("first_name"));
+                employee.setLastName(resultSet.getString("last_name"));
+                employee.setMobileNumber(resultSet.getString("mobile_number"));
+                employee.setEmail(resultSet.getString("email"));
+                
+                Date sqlDate = resultSet.getDate("joining_date");
+                if (sqlDate != null) {
+                    employee.setJoiningDate(sqlDate.toLocalDate());
+                }
+                employee.setActiveStatus(resultSet.getBoolean("active_status"));
+                employees.add(employee);
+           }
+
+           return employees;
             
-            Date sqlDate = myRes.getDate("joining_date");
-            if (sqlDate != null) {
-                employee.setJoiningDate(sqlDate.toLocalDate());
-            }
-            employee.setActiveStatus(myRes.getBoolean("active_status"));
-            employees.add(employee);
-        }
-
-        return employees;
+        } 
     }
 
-    public Employee getEmployeeById(int empid) throws SQLException{
+    public Employee getEmployeeById(int employeeId) throws SQLException{
 
         Employee employee = new Employee();
-        String sql = "SELECT * FROM employee WHERE id = ?";                                                       
-        Connection myConn;
-
-
-        myConn = getConnection();
-        PreparedStatement myStmt = myConn.prepareStatement(sql); 
-        myStmt.setInt(1, empid);   
-
-        ResultSet myRes = myStmt.executeQuery();
-
-        if(myRes.next()){
-            employee.setId(myRes.getInt("id"));
-            employee.setFirstName(myRes.getString("first_name"));
-            employee.setLastName(myRes.getString("last_name"));
-            employee.setMobileNumber(myRes.getString("mobile_number"));
-            employee.setEmail(myRes.getString("email"));
-            
-            Date sqlDate = myRes.getDate("joining_date");
-            if (sqlDate != null) {
-                employee.setJoiningDate(sqlDate.toLocalDate());
-            }
-            employee.setActiveStatus(myRes.getBoolean("active_status"));
-        }
+        String selectEmployeeByIdQuery = "SELECT first_name,last_name,mobile_number,email,joining_date,active_status FROM employee WHERE id = ?";    
         
+        try (Connection connection = DatabaseConnectionUtil.getConnection(URL,USERNAME,PASSWORD);
+             PreparedStatement statment = connection.prepareStatement(selectEmployeeByIdQuery)) {
+
+            
+            statment.setInt(1, employeeId);   
+
+            ResultSet resultSet = statment.executeQuery();
+
+            if(resultSet.next()){
+                employee.setFirstName(resultSet.getString("first_name"));
+                employee.setLastName(resultSet.getString("last_name"));
+                employee.setMobileNumber(resultSet.getString("mobile_number"));
+                employee.setEmail(resultSet.getString("email"));
+                
+                Date sqlDate = resultSet.getDate("joining_date");
+                if (sqlDate != null) {
+                    employee.setJoiningDate(sqlDate.toLocalDate());
+                }
+                employee.setActiveStatus(resultSet.getBoolean("active_status"));
+            }
+            
+        } 
 
         return employee;
     }
 
-    public int deleteEmployee(int empid) throws SQLException{
+    public int deleteEmployeeById(int employeeId) throws SQLException{
 
-        String sql = "DELETE FROM employee WHERE id=?";
-        Connection myConn;
-
-        int rowsAffected = 0;
+        String deleteEmployeeByIdQuery = "DELETE FROM employee WHERE id=?";
      
-        myConn = getConnection();
-        PreparedStatement myStmt = myConn.prepareStatement(sql);
-        myStmt.setInt(1, empid);
-        rowsAffected = myStmt.executeUpdate();
-        
-        return rowsAffected;
+        try (Connection connection = DatabaseConnectionUtil.getConnection(URL,USERNAME,PASSWORD);
+             PreparedStatement statment = connection.prepareStatement(deleteEmployeeByIdQuery);) {
+
+            statment.setInt(1, employeeId);
+            return statment.executeUpdate();
+            
+        } 
         
     }
 
     public int updateEmployee(Employee employee) throws SQLException {
-        String sql = "UPDATE employee SET first_name = ?, last_name = ?, mobile_number = ?, email = ?, joining_date = ?, active_status = ? WHERE id = ?";
-        Connection myConn;
-        int rowsAffected = 0;
-        
+        String updateEmployeeQuery = "UPDATE employee SET first_name = ?, last_name = ?, mobile_number = ?, email = ?, joining_date = ?, active_status = ? WHERE id = ?";
+
+        try (Connection connection = DatabaseConnectionUtil.getConnection(URL,USERNAME,PASSWORD);
+             PreparedStatement statment = connection.prepareStatement(updateEmployeeQuery);) {
+
             
+            statment.setString(1, employee.getFirstName());
+            statment.setString(2, employee.getLastName());
+            statment.setString(3, employee.getMobileNumber());
+            statment.setString(4, employee.getEmail());
+            statment.setBoolean(6, employee.isActiveStatus());
+
+            LocalDate joiningDate = employee.getJoiningDate();
+            if (joiningDate != null) {
+                statment.setDate(5, java.sql.Date.valueOf(joiningDate));
+            } else {
+                statment.setNull(5, Types.DATE);
+            }
+
+            statment.setInt(7, employee.getId());
+    
+            return statment.executeUpdate();
             
-        myConn = getConnection();
-        PreparedStatement myStmt = myConn.prepareStatement(sql);
-
-        myStmt.setString(1, employee.getFirstName());
-        myStmt.setString(2, employee.getLastName());
-        myStmt.setString(3, employee.getMobileNumber());
-        myStmt.setString(4, employee.getEmail());
-        myStmt.setBoolean(6, employee.isActiveStatus());
-
-        LocalDate joiningDate = employee.getJoiningDate();
-        if (joiningDate != null) {
-            myStmt.setDate(5, java.sql.Date.valueOf(joiningDate));
-        } else {
-            myStmt.setNull(5, Types.DATE);
-        }
-
-        myStmt.setInt(7, employee.getId());
+        } 
         
-    
-        
-        // Execute update
-        rowsAffected = myStmt.executeUpdate();
-        
-        if (rowsAffected == 0) {
-            throw new SQLException("Update failed, no rows affected");
-        }
-    
-
-        return rowsAffected;
 }
     
 }
